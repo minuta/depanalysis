@@ -23,6 +23,8 @@ class Config:
     def get_all_config_data(self):
         return self.settings
 
+
+
 if __name__ == "__main__":
     cfg = Config()
     print(cfg.get_all_config_data())

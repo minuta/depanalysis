@@ -1,25 +1,31 @@
 import subprocess
 import os.path
+from config import Config
 
 
-JDEPS_PATH = '/usr/lib/jvm/java-11-openjdk/bin/jdeps'
-JDEPS_VERSION = "11.0.8"
+class Tool:
+
+    JDEPS_VERSION_PARAM = "--version"
+
+    config = Config()
+
+    def is_jdeps_available(self):
+        return os.path.exists(self.config.get_path())
 
 
-def is_jdeps_available():
-    return os.path.exists(JDEPS_PATH)
-
-
-def run_jdeps(params):
-    all_params = [JDEPS_PATH]  
-    all_params.extend(params)
-    return subprocess.run(all_params, capture_output=True, text=True).stdout.strip()    
-
+    # params should be list!
+    def run_jdeps(self, params):
+        all_params = [self.config.get_path()]  
+        all_params.extend(params)
+        return subprocess.run(all_params, capture_output=True, text=True).stdout.strip()    
 
 
 
 def main():
-    pass
+    tool = Tool()
+    print("Jdeps available?: " + str(tool.is_jdeps_available()))
+    print("Checking Jdeps version: " + tool.run_jdeps([tool.JDEPS_VERSION_PARAM]))
+
 
 if __name__ == "__main__":
     main()
